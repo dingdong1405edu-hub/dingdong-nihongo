@@ -2353,6 +2353,13 @@ const speakingSetsData = [
 async function main() {
   console.log('Starting seed...')
 
+  // Skip if already seeded (idempotency check for production restarts)
+  const existing = await prisma.kanaSet.count()
+  if (existing > 0) {
+    console.log(`Database already seeded (${existing} KanaSets found). Skipping.`)
+    return
+  }
+
   // --- 1. Clean existing data (reverse dependency order) ---
   console.log('Cleaning existing data...')
   await prisma.attempt.deleteMany()
