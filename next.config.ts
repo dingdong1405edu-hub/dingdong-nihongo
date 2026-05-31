@@ -21,9 +21,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    turbo: {},
-  },
+  turbopack: {},
 };
 
 export default nextConfig;
