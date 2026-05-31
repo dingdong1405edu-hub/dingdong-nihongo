@@ -1,9 +1,6 @@
-@import "tailwindcss";
-
-@theme {
-  --color-sakura: #FFB7C5;
-  --font-japanese: "Noto Sans JP", sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -39,12 +36,11 @@
   }
 
   * {
-    border-color: hsl(var(--border));
+    @apply border-border;
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    @apply bg-background text-foreground;
     font-synthesis: none;
   }
 
