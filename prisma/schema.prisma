@@ -1,0 +1,283 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  name          String?
+  image         String?
+  passwordHash  String?
+  role          Role       @default(LEARNER)
+  xp            Int        @default(0)
+  hearts        Int        @default(5)
+  streakDays    Int        @default(0)
+  jlptLevel     JLPTLevel  @default(N5)
+  lastActiveAt  DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  accounts         Account[]
+  sessions         Session[]
+  vocabProgress    VocabProgress[]
+  grammarProgress  GrammarProgress[]
+  kanjiProgress    KanjiProgress[]
+  kanaProgress     KanaProgress[]
+  attempts         Attempt[]
+}
+
+// NextAuth models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model VocabUnit {
+  id        String        @id @default(cuid())
+  title     String
+  titleJa   String
+  jlptLevel JLPTLevel
+  order     Int
+  lessons   VocabLesson[]
+  createdAt DateTime      @default(now())
+}
+
+model VocabLesson {
+  id        String          @id @default(cuid())
+  unitId    String
+  unit      VocabUnit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  order     Int
+  title     String          @default("")
+  exercises Json
+  createdAt DateTime        @default(now())
+
+  progress VocabProgress[]
+}
+
+model VocabProgress {
+  id        String      @id @default(cuid())
+  userId    String
+  lessonId  String
+  completed Boolean     @default(false)
+  score     Int         @default(0)
+  createdAt DateTime    @default(now())
+
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson VocabLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model GrammarUnit {
+  id        String          @id @default(cuid())
+  title     String
+  titleJa   String
+  jlptLevel JLPTLevel
+  order     Int
+  lessons   GrammarLesson[]
+  createdAt DateTime        @default(now())
+}
+
+model GrammarLesson {
+  id        String            @id @default(cuid())
+  unitId    String
+  unit      GrammarUnit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  order     Int
+  title     String            @default("")
+  exercises Json
+  createdAt DateTime          @default(now())
+
+  progress GrammarProgress[]
+}
+
+model GrammarProgress {
+  id        String        @id @default(cuid())
+  userId    String
+  lessonId  String
+  completed Boolean       @default(false)
+  score     Int           @default(0)
+  createdAt DateTime      @default(now())
+
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson GrammarLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model KanjiCharacter {
+  id          String          @id @default(cuid())
+  character   String          @unique
+  onyomi      Json
+  kunyomi     Json
+  meaning     String
+  jlptLevel   JLPTLevel
+  grade       Int?
+  strokeCount Int
+  radicals    Json
+  examples    Json
+  mnemonic    String?
+  createdAt   DateTime        @default(now())
+
+  progress KanjiProgress[]
+}
+
+model KanjiProgress {
+  id          String         @id @default(cuid())
+  userId      String
+  kanjiId     String
+  mastered    Boolean        @default(false)
+  reviewCount Int            @default(0)
+  createdAt   DateTime       @default(now())
+
+  user  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kanji KanjiCharacter @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, kanjiId])
+}
+
+model KanaSet {
+  id         String         @id @default(cuid())
+  type       KanaType
+  row        String
+  characters Json
+  order      Int            @default(0)
+  createdAt  DateTime       @default(now())
+
+  progress KanaProgress[]
+}
+
+model KanaProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  kanaSetId String
+  mastered  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kanaSet KanaSet @relation(fields: [kanaSetId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, kanaSetId])
+}
+
+model ReadingTest {
+  id        String     @id @default(cuid())
+  title     String
+  titleJa   String
+  jlptLevel JLPTLevel
+  passage   String     @db.Text
+  furigana  String?    @db.Text
+  timeLimit Int
+  questions Question[]
+  createdAt DateTime   @default(now())
+}
+
+model ListeningTest {
+  id         String     @id @default(cuid())
+  title      String
+  jlptLevel  JLPTLevel
+  audioUrl   String
+  transcript String?    @db.Text
+  timeLimit  Int        @default(600)
+  questions  Question[]
+  createdAt  DateTime   @default(now())
+}
+
+model Question {
+  id             String       @id @default(cuid())
+  type           QuestionType
+  prompt         String       @db.Text
+  promptFurigana String?      @db.Text
+  options        Json?
+  correctAnswer  Json
+  explanation    String?      @db.Text
+  order          Int          @default(0)
+  readingId      String?
+  listeningId    String?
+  createdAt      DateTime     @default(now())
+
+  reading   ReadingTest?   @relation(fields: [readingId], references: [id], onDelete: Cascade)
+  listening ListeningTest? @relation(fields: [listeningId], references: [id], onDelete: Cascade)
+}
+
+model WritingTask {
+  id           String          @id @default(cuid())
+  taskType     WritingTaskType
+  prompt       String          @db.Text
+  promptJa     String?         @db.Text
+  imageUrl     String?
+  minChars     Int
+  timeLimit    Int
+  jlptLevel    JLPTLevel
+  requireKeigo Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+}
+
+model SpeakingSet {
+  id           String           @id @default(cuid())
+  jlptLevel    JLPTLevel
+  taskType     SpeakingTaskType
+  topic        String
+  topicJa      String
+  prompts      Json
+  prepTimeSec  Int              @default(30)
+  speakTimeSec Int              @default(90)
+  imageUrl     String?
+  createdAt    DateTime         @default(now())
+}
+
+model Attempt {
+  id          String   @id @default(cuid())
+  userId      String
+  skill       Skill
+  refId       String
+  rawAnswer   Json
+  score       Float?
+  feedback    Json?
+  durationSec Int?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role             { LEARNER ADMIN }
+enum JLPTLevel        { N5 N4 N3 N2 N1 }
+enum KanaType         { HIRAGANA KATAKANA }
+enum Skill            { READING LISTENING WRITING SPEAKING VOCAB GRAMMAR KANJI KANA }
+enum QuestionType     { MCQ FILL_BLANK TRUE_FALSE MATCHING SHORT_ANSWER }
+enum WritingTaskType  { ESSAY OPINION LETTER DESCRIPTION }
+enum SpeakingTaskType { INTERVIEW PICTURE_DESC OPINION ROLEPLAY }
