@@ -274,10 +274,53 @@ model Attempt {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-enum Role             { LEARNER ADMIN }
-enum JLPTLevel        { N5 N4 N3 N2 N1 }
-enum KanaType         { HIRAGANA KATAKANA }
-enum Skill            { READING LISTENING WRITING SPEAKING VOCAB GRAMMAR KANJI KANA }
-enum QuestionType     { MCQ FILL_BLANK TRUE_FALSE MATCHING SHORT_ANSWER }
-enum WritingTaskType  { ESSAY OPINION LETTER DESCRIPTION }
-enum SpeakingTaskType { INTERVIEW PICTURE_DESC OPINION ROLEPLAY }
+enum Role {
+  LEARNER
+  ADMIN
+}
+
+enum JLPTLevel {
+  N5
+  N4
+  N3
+  N2
+  N1
+}
+
+enum KanaType {
+  HIRAGANA
+  KATAKANA
+}
+
+enum Skill {
+  READING
+  LISTENING
+  WRITING
+  SPEAKING
+  VOCAB
+  GRAMMAR
+  KANJI
+  KANA
+}
+
+enum QuestionType {
+  MCQ
+  FILL_BLANK
+  TRUE_FALSE
+  MATCHING
+  SHORT_ANSWER
+}
+
+enum WritingTaskType {
+  ESSAY
+  OPINION
+  LETTER
+  DESCRIPTION
+}
+
+enum SpeakingTaskType {
+  INTERVIEW
+  PICTURE_DESC
+  OPINION
+  ROLEPLAY
+}
