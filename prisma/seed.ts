@@ -2436,7 +2436,7 @@ async function main() {
           unitId: unit.id,
           order: lessonData.order,
           title: lessonData.title,
-          exercises: lessonData.exercises,
+          exercises: JSON.parse(JSON.stringify(lessonData.exercises)),
         },
       })
     }
