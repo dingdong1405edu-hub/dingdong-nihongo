@@ -3,6 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   basePath: "/ja",
   assetPrefix: "/ja",
+  experimental: {
+    // Allow Server Actions when this zone is reached through dingdongspeak.com
+    serverActions: {
+      allowedOrigins: ["dingdongspeak.com", "web-production-53710.up.railway.app"],
+    },
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
