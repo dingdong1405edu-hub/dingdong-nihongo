@@ -49,7 +49,7 @@ export default function NewKanaSetPage() {
 
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/kana', {
+      const res = await fetch('/ja/api/admin/kana', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

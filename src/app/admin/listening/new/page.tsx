@@ -33,7 +33,7 @@ export default function NewListeningTestPage() {
 
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/listening', {
+      const res = await fetch('/ja/api/admin/listening', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

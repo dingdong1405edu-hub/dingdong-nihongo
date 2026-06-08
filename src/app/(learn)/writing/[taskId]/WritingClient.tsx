@@ -113,7 +113,7 @@ export function WritingClient({ task }: WritingClientProps) {
     localStorage.removeItem(storageKey)
 
     try {
-      const res = await fetch('/api/grade/writing', {
+      const res = await fetch('/ja/api/grade/writing', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

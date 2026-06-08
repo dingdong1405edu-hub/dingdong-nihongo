@@ -78,7 +78,7 @@ export function KanjiEditForm({ kanji }: Props) {
     }
 
     try {
-      const res = await fetch(`/api/admin/kanji/${kanji.id}`, {
+      const res = await fetch(`/ja/api/admin/kanji/${kanji.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

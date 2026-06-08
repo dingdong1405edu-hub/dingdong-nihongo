@@ -33,7 +33,7 @@ export default function NewReadingTestPage() {
 
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/reading', {
+      const res = await fetch('/ja/api/admin/reading', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

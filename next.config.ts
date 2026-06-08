@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  basePath: "/ja",
+  assetPrefix: "/ja",
   typescript: {
     ignoreBuildErrors: true,
   },

@@ -59,7 +59,7 @@ export function KanaEditForm({ set }: Props) {
 
     setLoading(true)
     try {
-      const res = await fetch(`/api/admin/kana/${set.id}`, {
+      const res = await fetch(`/ja/api/admin/kana/${set.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

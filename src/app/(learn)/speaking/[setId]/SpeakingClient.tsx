@@ -120,7 +120,7 @@ export function SpeakingClient({ speakingSet }: SpeakingClientProps) {
         // Step 1: transcribe
         const formData = new FormData()
         formData.append('audio', audioBlob, 'recording.webm')
-        const transcribeRes = await fetch('/api/transcribe', {
+        const transcribeRes = await fetch('/ja/api/transcribe', {
           method: 'POST',
           body: formData,
         })
@@ -135,7 +135,7 @@ export function SpeakingClient({ speakingSet }: SpeakingClientProps) {
         const transcript = transcribeJson.transcript
 
         // Step 2: grade
-        const gradeRes = await fetch('/api/grade/speaking', {
+        const gradeRes = await fetch('/ja/api/grade/speaking', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

@@ -44,7 +44,7 @@ export function ReadingEditForm({ test }: Props) {
     }
 
     try {
-      const res = await fetch(`/api/admin/reading/${test.id}`, {
+      const res = await fetch(`/ja/api/admin/reading/${test.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

@@ -25,13 +25,17 @@ export default auth((req) => {
   // Admin routes: must be logged in AND have ADMIN role
   if (isAdmin) {
     if (!isLoggedIn || session?.user?.role !== 'ADMIN') {
-      return Response.redirect(new URL('/dashboard', nextUrl))
+      // clone() keeps the basePath (/ja) so the redirect stays inside this zone
+      const url = nextUrl.clone()
+      url.pathname = '/dashboard'
+      return Response.redirect(url)
     }
   }
 
   // Protected routes: must be logged in
   if (isProtected && !isLoggedIn) {
-    const loginUrl = new URL('/login', nextUrl)
+    const loginUrl = nextUrl.clone()
+    loginUrl.pathname = '/login'
     loginUrl.searchParams.set('callbackUrl', nextUrl.pathname)
     return Response.redirect(loginUrl)
   }

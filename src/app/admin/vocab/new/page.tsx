@@ -24,7 +24,7 @@ export default function NewVocabUnitPage() {
     }
 
     try {
-      const res = await fetch('/api/admin/vocab', {
+      const res = await fetch('/ja/api/admin/vocab', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

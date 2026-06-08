@@ -24,7 +24,7 @@ export default function NewGrammarUnitPage() {
     }
 
     try {
-      const res = await fetch('/api/admin/grammar', {
+      const res = await fetch('/ja/api/admin/grammar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

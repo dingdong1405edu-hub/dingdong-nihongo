@@ -18,7 +18,7 @@ export function UserActions({ userId, currentJlpt }: Props) {
   async function resetHearts() {
     setLoading('hearts')
     try {
-      const res = await fetch(`/api/admin/users/${userId}`, {
+      const res = await fetch(`/ja/api/admin/users/${userId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resetHearts: true }),
@@ -37,7 +37,7 @@ export function UserActions({ userId, currentJlpt }: Props) {
     setLoading('jlpt')
     setShowJlpt(false)
     try {
-      const res = await fetch(`/api/admin/users/${userId}`, {
+      const res = await fetch(`/ja/api/admin/users/${userId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jlptLevel: level }),

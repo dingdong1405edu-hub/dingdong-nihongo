@@ -30,7 +30,7 @@ export default function NewWritingTaskPage() {
     }
 
     try {
-      const res = await fetch('/api/admin/writing', {
+      const res = await fetch('/ja/api/admin/writing', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

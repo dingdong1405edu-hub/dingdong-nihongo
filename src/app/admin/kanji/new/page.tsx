@@ -67,7 +67,7 @@ export default function NewKanjiPage() {
     }
 
     try {
-      const res = await fetch('/api/admin/kanji', {
+      const res = await fetch('/ja/api/admin/kanji', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

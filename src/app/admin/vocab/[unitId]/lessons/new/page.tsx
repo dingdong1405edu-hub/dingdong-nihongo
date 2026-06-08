@@ -127,7 +127,7 @@ export default function NewVocabLessonPage({ params }: Props) {
 
     setLoading(true)
     try {
-      const res = await fetch(`/api/admin/vocab/lessons`, {
+      const res = await fetch(`/ja/api/admin/vocab/lessons`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
